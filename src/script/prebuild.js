@@ -37,11 +37,16 @@ fs.writeFileSync(
     <meta name="keywords" content="Conway,Game of Life" />
     <meta name="description" content="Conway's Game of Life web version!" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=5.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css" />
     <link rel="shortcut icon" href="./favicon.gif" />
   </head>
   <body>
-    <h1>Game of Life</h1>
+    <h1 class="main-title">GAME OF LIFE</h1>
+    <div class="flex">
+    <input type="text" placeholder="Filter patterns.." id="patterns-search" onkeyup="filterFunction()">
     <select id="patterns">${patterns
       .map(
         ({ name, path }) => `
@@ -49,6 +54,10 @@ fs.writeFileSync(
       )
       .join('')}
     </select>
+    </div>
+    <button class="btn" id="party-mode">
+      🎉 Party mode
+    </button>
     <script src="../index.ts"></script>
   </body>
 </html>
