@@ -23,6 +23,7 @@ export class GameOfLifeEngine {
   public context: CanvasRenderingContext2D;
   private life: Life[][];
   private intervalKey: null | number = null;
+  public partyMode: boolean = false;
 
   constructor(life: Life[][]) {
     createCanvas((cvs) => {
@@ -42,6 +43,11 @@ export class GameOfLifeEngine {
     this.life = life;
     this.canvas.width = getCoordinateX(life[0].length);
     this.canvas.height = getCoordinateY(life.length);
+  }
+
+  setPartyMode() {
+    this.partyMode = !this.partyMode;
+    document.querySelector('#party-mode').classList.toggle('active');
   }
 
   public clear(): void {
@@ -74,7 +80,11 @@ export class GameOfLifeEngine {
     this.clear();
     this.life.forEach((children, i) => {
       children.forEach((isSurvive, j) => {
-        this.context.fillStyle = isSurvive ? DOTS_STYLE.SURVIVE_COLOR : DOTS_STYLE.DEAD_COLOR;
+        if(this.partyMode) {
+          this.context.fillStyle = isSurvive ? this.getRandomColor() : DOTS_STYLE.DEAD_COLOR;
+        } else {
+          this.context.fillStyle = isSurvive ? DOTS_STYLE.SURVIVE_COLOR : DOTS_STYLE.DEAD_COLOR;
+        }
         this.drawDot(j, i);
       });
     });
@@ -88,4 +98,15 @@ export class GameOfLifeEngine {
     const count = this.isSurvive(x - 1, y - 1) + this.isSurvive(x, y - 1) + this.isSurvive(x + 1, y - 1) + this.isSurvive(x - 1, y) + this.isSurvive(x + 1, y) + this.isSurvive(x - 1, y + 1) + this.isSurvive(x, y + 1) + this.isSurvive(x + 1, y + 1);
     return count === 3 || (isSurvive && count === 2) ? 1 : 0;
   }
+
+  protected getRandomColor(){
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  
 }
